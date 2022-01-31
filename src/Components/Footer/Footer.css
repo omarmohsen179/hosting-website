@@ -1,0 +1,69 @@
+.footer-container {
+  min-height: 300px;
+  color: white;
+  padding: 30px 0;
+  margin-top: 50px;
+  display: flex;
+  background-size: cover;
+  background-position: center right;
+  background-repeat: no-repeat;
+  /* height: 512px; */
+  display: flow-root;
+}
+.main-footer {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  background-color: rgb(16 41 81 / 72%);
+  padding: 38px 0;
+}
+.main-footer h1 {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+.footer-section-title {
+  font-size: 2.5rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  border-bottom: 4px solid rgb(247 246 133);
+}
+.footer-section-content {
+  margin-top: 20px;
+  margin-bottom: 50px;
+  font-size: 20px;
+}
+.footer-section {
+  margin: 0 30px;
+}
+.element-hover:hover {
+  text-decoration: underline;
+}
+@media screen and (max-width: 800px) {
+  .footer-section {
+    margin: 30px 0px;
+  }
+}
+@media screen and (min-width: 800px) {
+  .main-footer {
+    padding: 38px;
+  }
+  .footer-container {
+    padding: 30px;
+  }
+}
+.footerContactsContainerIcon {
+  color: white !important;
+
+  transition: transform 0.2s;
+}
+.footerContactsContainerIcon:hover {
+  transform: scale(1.15);
+}
+.footerContactsContainer {
+  display: flex;
+  justify-content: center;
+  column-gap: 20px;
+  font-size: 32px;
+  cursor: pointer;
+}
