@@ -11,7 +11,7 @@ const FormTextArea = ({
     <div>
       <label className="form-label-input">{Label}</label>
       <textarea
-        class="form-control"
+        className="form-control"
         aria-label="With textarea"
         name={Name}
         onChange={handleChange}

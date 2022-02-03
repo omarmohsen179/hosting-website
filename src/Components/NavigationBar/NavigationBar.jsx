@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import "./NavigationBar.css";
 import logo from "../../Assets/download.svg";
+import menulogo from "../../Assets/download.png";
 import { useLocation, Link, useHistory } from "react-router-dom";
 
 function NavigationBar() {
@@ -29,12 +30,30 @@ function NavigationBar() {
     { name: "Log in", route: "/about-us" },
     { name: "Listinings", route: "/listinings" },
   ]);
+
   const [screenSize, getDimension] = useState({
     dynamicWidth: window.innerWidth,
     dynamicHeight: window.innerHeight,
   });
-
+  const openMenu = () => {
+    setsubmenu(false);
+    document.getElementById("touch").classList.remove("collapsed");
+    document.getElementById("mySidenav").style.width = "250px";
+    document.getElementById("maincontent").style.right = "250px";
+    document.getElementById("maincontent").style.position = "absolute";
+    document.getElementById("mySidenav").style.right = "0";
+  };
+  const closeMenu = () => {
+    setsubmenu(true);
+    document.getElementById("touch").classList.add("collapsed");
+    document.getElementById("maincontent").style.right = "0";
+    document.getElementById("maincontent").style.position = "";
+    document.getElementById("mySidenav").style.width = "0px";
+  };
   const setDimension = useCallback(() => {
+    if (window.innerWidth > 998) {
+      closeMenu();
+    }
     getDimension({
       dynamicWidth: window.innerWidth,
       dynamicHeight: window.innerHeight,
@@ -44,35 +63,41 @@ function NavigationBar() {
     return pages.current.filter((ele) => location.pathname == ele.route)[0];
   }, [location.pathname]);
   useEffect(() => {
-    /* axios
-      .get("http://localhost:44379/Api/Branch", {
-        firstName: "Finn",
-        lastName: "Williams",
-      })
-      .then(
-        (response) => {
-          console.log(response);
-        },
-        (error) => {
-          console.log(error);
-        }
-      );*/
-  }, []);
-  useEffect(() => {
     window.addEventListener("resize", setDimension);
 
     return () => {
       window.removeEventListener("resize", setDimension);
     };
   }, [screenSize]);
-  useEffect(() => {
-    console.log();
-  }, [location.pathname]);
 
-  let [addclass, setaddclass] = useState(false);
+  const Buttontoggler = () => {
+    return (
+      <div
+        style={{ width: "60px" }}
+        className="collabse-button"
+        onClick={() => (submenu ? openMenu() : closeMenu())}
+      >
+        <button
+          className={"navbar-toggler " + (submenu ? "collapsed" : "")}
+          type="button"
+          id="touch"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+          style={{ backgroundColor: "transparent", cursor: "pointer " }}
+        >
+          <span className="toggler-icon top-bar"></span>
+          <span className="toggler-icon middle-bar"></span>
+          <span className="toggler-icon bottom-bar"></span>
+        </button>
+      </div>
+    );
+  };
   return (
     <nav className={" NavbarDraw container "} id="mynav">
-      <div className="mainclass  container">
+      <div className="mainclass  ">
         <div className="main-section-navigation ">
           <div className="Logo-size " style={{ cursor: "pointer" }}>
             <img
@@ -86,31 +111,25 @@ function NavigationBar() {
             <ul className="Horizontal-list  remove-dot">
               {pages.current.map((ele, index) => (
                 <li
+                  key={index}
                   className={
                     getRoutes().route == ele.route
                       ? "active-page allnav"
                       : " allnav"
                   }
-                  onMouseOver={() => {
-                    document
-                      .getElementById("dropdown-item-list" + index)
-                      .classList.add("display-list-nav");
-                  }}
-                  onMouseLeave={() => {
-                    document
-                      .getElementById("dropdown-item-list" + index)
-                      .classList.remove("display-list-nav");
-                  }}
                 >
                   <Link className="Horizontal-list-elements " to={ele.route}>
                     {ele.name}
                   </Link>
-
-                  <div class="dropdown-content">
-                    <a href="#">Link 1</a>
-                    <a href="#">Link 2</a>
-                    <a href="#">Link 3</a>
-                  </div>
+                  {ele?.dropdown ? (
+                    <div className="dropdown-content">
+                      {ele.dropdown.map((ele, indexx) => (
+                        <Link key={indexx} className="drop-down-link">
+                          {ele.name}
+                        </Link>
+                      ))}
+                    </div>
+                  ) : null}
                 </li>
               ))}
             </ul>
@@ -118,8 +137,9 @@ function NavigationBar() {
         </div>
         <div>
           <ul className="Horizontal-list  remove-dot">
-            {pages2.current.map((ele) => (
+            {pages2.current.map((ele, index) => (
               <li
+                key={index}
                 className={getRoutes().route == ele.route ? "active-page" : ""}
               >
                 <Link className="Horizontal-list-elements" to={ele.route}>
@@ -128,11 +148,26 @@ function NavigationBar() {
               </li>
             ))}
           </ul>
-          <div id="mySidenav" class="sidenav">
-            <a href="#">About</a>
-            <a href="#">Services</a>
-            <a href="#">Clients</a>
-            <a href="#">Contact</a>
+          <div id="mySidenav" className="sidenav">
+            <ul className=" remove-dot " style={{ position: "absolute" }}>
+              <li>
+                <Link className=" " to={"/"}>
+                  <img
+                    onClick={() => history.push("/")}
+                    src={menulogo}
+                    width={"190px"}
+                    height={"30px"}
+                  />
+                </Link>
+              </li>
+              {pages.current.map((ele, index) => (
+                <li key={index}>
+                  <Link className=" " to={ele.route}>
+                    {ele.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
 
           <input
@@ -141,45 +176,7 @@ function NavigationBar() {
             type="checkbox"
             name="menu"
           />
-          <div
-            style={{ width: "60px" }}
-            className="collabse-button"
-            onClick={() => {
-              document.getElementById("touch").classList.toggle("collapsed");
-              setsubmenu(!submenu);
-              if (submenu) {
-                document.getElementById("mySidenav").style.width = "250px";
-                //ar
-                //document.getElementById("maincontent").style.marginLeft ="250px";
-                // document.getElementById("mySidenav").style.left = "0";
-                //en
-                document.getElementById("maincontent").style.marginRight =
-                  "250px";
-                document.getElementById("mySidenav").style.right = "0";
-              } else {
-                document.getElementById("maincontent").style.marginRight = "0";
-                document.getElementById("mySidenav").style.width = "0px";
-              }
-
-              //    document.getElementById("sidemenu").classList.toggle("open");
-            }}
-          >
-            <button
-              className={"navbar-toggler " + (submenu ? "collapsed" : "")}
-              type="button"
-              id="touch"
-              data-bs-toggle="collapse"
-              data-bs-target="#navbarSupportedContent"
-              aria-controls="navbarSupportedContent"
-              aria-expanded="false"
-              aria-label="Toggle navigation"
-              style={{ backgroundColor: "transparent", cursor: "pointer " }}
-            >
-              <span className="toggler-icon top-bar"></span>
-              <span className="toggler-icon middle-bar"></span>
-              <span className="toggler-icon bottom-bar"></span>
-            </button>
-          </div>
+          <Buttontoggler />
         </div>
       </div>
     </nav>
