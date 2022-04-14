@@ -27,7 +27,7 @@ function NavigationBar() {
   ]);
   let pages2 = useRef([
     { name: "Contact Us", route: "/" },
-    { name: "Log in", route: "/about-us" },
+    { name: "Log in", route: "/log-in" },
     { name: "Listinings", route: "/listinings" },
   ]);
 
@@ -108,7 +108,7 @@ function NavigationBar() {
             />
           </div>
           <div>
-            <ul className="Horizontal-list  remove-dot">
+            <ul className="Horizontal-list large-list  remove-dot">
               {pages.current.map((ele, index) => (
                 <li
                   key={index}
@@ -140,7 +140,7 @@ function NavigationBar() {
             {pages2.current.map((ele, index) => (
               <li
                 key={index}
-                className={getRoutes().route == ele.route ? "active-page" : ""}
+                className={getRoutes().route === ele.route ? "active-page" : ""}
               >
                 <Link className="Horizontal-list-elements" to={ele.route}>
                   {ele.name}

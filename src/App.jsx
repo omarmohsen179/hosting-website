@@ -1,12 +1,6 @@
 import "./App.css";
 import ScrollToTop from "./Components/ScrollTop";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  Redirect,
-} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 import User from "./Layout/User";
 import { Fragment } from "react";
@@ -19,8 +13,6 @@ function App() {
 
         <Switch>
           <Route path="/" component={Unknown} />
-          <Route path={"/not-found"} component={() => <h1>Not Found</h1>} />
-          <Redirect to="/" />
         </Switch>
       </Fragment>
     </div>

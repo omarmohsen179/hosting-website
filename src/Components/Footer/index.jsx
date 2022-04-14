@@ -59,7 +59,7 @@ function Footer() {
       //  style={{ backgroundImage: "url(" + back + ")" }}
       className="footer-container  "
     >
-      <div className=" main-footer" style={{ margin: 0, display: "flex" }}>
+      <div className=" main-footer">
         <ul className={"footer-list-container remove-dot " + colsdiv}>
           <li className="title-list-footer">{"Products"}</li>
           {Products.current.map((ele) => (
